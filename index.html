@@ -7,8 +7,44 @@
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
 body { background: #0a0a1a; overflow: hidden; font-family: 'Courier New', monospace; touch-action: none; }
-#gameCanvas { display: block; background: #000; cursor: none; }
-#ui { position: absolute; top: 12px; left: 12px; color: #0ff; font-size: 18px; font-weight: bold; text-shadow: 0 0 12px #0ff; z-index: 10; background: rgba(0,0,0,0.65); padding: 8px 18px; border-radius: 8px; backdrop-filter: blur(4px); border-left: 3px solid #0ff; font-family: monospace; }
+
+/* ============ BANNER TOPO (SEM ANIMAÇÕES) ============ */
+#topBanner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50px;
+  background: #0a0a2a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  border-bottom: 2px solid #0ff;
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
+  cursor: pointer;
+  text-decoration: none;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+#topBanner:hover {
+  box-shadow: 0 0 35px rgba(0, 255, 255, 0.6);
+}
+
+/* TEXTO ESTÁTICO SEM ANIMAÇÕES */
+#topBanner::after {
+  content: '⚡ OFERTAS RELÂMPAGOS - COMPRE JÁ! ⚡';
+  color: #ff0;
+  font-size: 14px;
+  font-weight: bold;
+  text-shadow: 0 0 5px #ff0;
+  letter-spacing: 2px;
+  z-index: 2;
+  white-space: nowrap;
+}
+
+#gameCanvas { display: block; background: #000; cursor: none; margin-top: 50px; }
+#ui { position: absolute; top: 62px; left: 12px; color: #0ff; font-size: 18px; font-weight: bold; text-shadow: 0 0 12px #0ff; z-index: 10; background: rgba(0,0,0,0.65); padding: 8px 18px; border-radius: 8px; backdrop-filter: blur(4px); border-left: 3px solid #0ff; font-family: monospace; }
 #ui div { margin-bottom: 5px; }
 #controls { position: absolute; bottom: 15px; left: 0; right: 0; display: flex; justify-content: space-between; align-items: flex-end; padding: 0 15px; z-index: 10; pointer-events: none; }
 .ctrl-group { display: grid; gap: 6px; pointer-events: auto; }
@@ -19,7 +55,7 @@ body { background: #0a0a1a; overflow: hidden; font-family: 'Courier New', monosp
 #shootBtn { width: 90px; height: 90px; border-radius: 50%; border: 3px solid #f44; background: rgba(255, 50, 50, 0.25); color: #f44; font-size: 18px; font-weight: bold; font-family: 'Courier New', monospace; cursor: pointer; display: flex; align-items: center; justify-content: center; text-align: center; line-height: 1.3; -webkit-tap-highlight-color: transparent; box-shadow: 0 0 20px rgba(255, 50, 50, 0.4); backdrop-filter: blur(4px); transition: all 0.05s ease; pointer-events: auto; }
 #shootBtn:active, #shootBtn.active { background: rgba(255, 50, 50, 0.8); box-shadow: 0 0 35px #f44; transform: scale(0.92); }
 .shoot-group { display: flex; align-items: flex-end; }
-.overlay-panel { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.95); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 20; color: #fff; backdrop-filter: blur(8px); }
+.overlay-panel { position: absolute; top: 50px; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.95); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 20; color: #fff; backdrop-filter: blur(8px); }
 .overlay-panel h1 { font-size: 42px; color: #0ff; text-shadow: 0 0 25px #0ff; margin-bottom: 20px; letter-spacing: 2px; }
 .overlay-panel p { font-size: 18px; color: #ccc; margin-bottom: 30px; text-align: center; padding: 0 30px; max-width: 500px; }
 .overlay-panel button { padding: 16px 48px; font-size: 22px; font-family: 'Courier New', monospace; font-weight: bold; background: transparent; color: #0f0; border: 2px solid #0f0; border-radius: 60px; cursor: pointer; text-shadow: 0 0 12px #0f0; box-shadow: 0 0 20px rgba(0,255,0,0.3); transition: all 0.2s ease; }
@@ -28,17 +64,33 @@ body { background: #0a0a1a; overflow: hidden; font-family: 'Courier New', monosp
 .audio-warning { position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.7); color: #ff0; padding: 4px 12px; border-radius: 20px; font-size: 10px; z-index: 15; pointer-events: none; font-family: monospace; }
 .wave-badge { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 48px; font-weight: bold; color: rgba(0,255,255,0.3); text-shadow: 0 0 20px #0ff; pointer-events: none; z-index: 5; white-space: nowrap; animation: waveFlash 1s ease-out forwards; }
 @keyframes waveFlash { 0% { opacity: 1; transform: translate(-50%, -50%) scale(1); } 100% { opacity: 0; transform: translate(-50%, -50%) scale(1.5); } }
+
+/* ============ RESPONSIVIDADE ============ */
 @media (max-width: 600px) {
+  #topBanner { height: 40px; }
+  #topBanner::after { font-size: 11px; }
+  #gameCanvas { margin-top: 40px; }
+  #ui { top: 52px; font-size: 14px; padding: 5px 10px; }
   .dpad { grid-template-columns: 55px 55px 55px; grid-template-rows: 55px 55px 55px; gap: 4px; }
   .dpad-btn { width: 55px; height: 55px; font-size: 22px; }
   .dpad-empty { width: 55px; height: 55px; }
   #shootBtn { width: 70px; height: 70px; font-size: 14px; }
+  .overlay-panel { top: 40px; }
   .overlay-panel h1 { font-size: 28px; }
-  #ui { font-size: 14px; top: 8px; left: 8px; padding: 5px 10px; }
+}
+
+@media (max-width: 400px) {
+  #topBanner { height: 35px; }
+  #topBanner::after { font-size: 10px; letter-spacing: 0.5px; }
+  #gameCanvas { margin-top: 35px; }
+  #ui { top: 47px; font-size: 13px; }
 }
 </style>
 </head>
 <body>
+
+<!-- ============ BANNER ESTÁTICO (SEM ANIMAÇÕES) ============ -->
+<a href="https://collshp.com/smatvaoc?view=storefront" target="_blank" id="topBanner" title="Visitar Loja Oficial"></a>
 
 <canvas id="gameCanvas"></canvas>
 
@@ -106,7 +158,7 @@ const sound = new SoundManager();
 
 // ============ CONFIGURAÇÃO ============
 const canvas = document.getElementById('gameCanvas'); const ctx = canvas.getContext('2d');
-function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight - document.getElementById('topBanner').offsetHeight; }
 resizeCanvas(); window.addEventListener('resize', resizeCanvas);
 
 // ============ ESTADO DO JOGO ============
@@ -127,16 +179,16 @@ const dropShipTypes = [
 ];
 
 // ============ FUNDO ESTRELADO ============
-function initStars() { stars = []; for (let i = 0; i < 250; i++) { stars.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, size: Math.random() * 2.5 + 0.5, speed: Math.random() * 60 + 20, brightness: Math.random() * 0.8 + 0.2, twinkle: Math.random() * Math.PI * 2 }); } }
-function updateStars(dt) { for (let s of stars) { s.y += s.speed * dt; if (s.y > canvas.height) { s.y = 0; s.x = Math.random() * canvas.width; } s.twinkle += dt * 5; s.brightness = 0.5 + Math.sin(s.twinkle) * 0.3; } }
-function drawStars() { for (let s of stars) { ctx.fillStyle = `rgba(255, 240, 200, ${s.brightness * 0.7})`; ctx.fillRect(s.x, s.y, s.size, s.size); } }
+function initStars() { stars = []; for (let i = 0; i < 200; i++) { stars.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, size: Math.random() * 2 + 0.5, speed: Math.random() * 40 + 10, brightness: Math.random() * 0.8 + 0.2, twinkle: Math.random() * Math.PI * 2 }); } }
+function updateStars(dt) { for (let s of stars) { s.y += s.speed * dt; if (s.y > canvas.height) { s.y = 0; s.x = Math.random() * canvas.width; } s.twinkle += dt * 3; s.brightness = 0.5 + Math.sin(s.twinkle) * 0.2; } }
+function drawStars() { for (let s of stars) { ctx.fillStyle = `rgba(255, 240, 200, ${s.brightness * 0.6})`; ctx.fillRect(s.x, s.y, s.size, s.size); } }
 
 // ============ SPAWN DE ALIENS - ONDAS PRINCIPAIS ============
 function spawnAliens() {
   aliens = aliens.filter(a => !a.isDropShip); // Mantém drop ships ativos
-  const cols = Math.min(10, 4 + Math.floor(wave / 1.5)), rows = Math.min(6, 3 + Math.floor(wave / 2));
+  const cols = Math.min(8, 4 + Math.floor(wave / 1.5)), rows = Math.min(5, 3 + Math.floor(wave / 2));
   const alienW = 44, alienH = 36, padding = 12, totalW = cols * (alienW + padding), startX = (canvas.width - totalW) / 2, startY = -120;
-  aliensPerWave = Math.min(60, 20 + Math.floor(wave * 2.5));
+  aliensPerWave = Math.min(50, 20 + Math.floor(wave * 2));
   for (let r = 0; r < rows; r++) { for (let c = 0; c < cols; c++) {
     let hp = 1, type = Math.floor(Math.random() * 4);
     if (wave >= 3 && type === 3 && Math.random() < 0.25) hp = 2;
@@ -190,8 +242,7 @@ function updateEnemyCount() { document.getElementById('enemyCount').textContent 
 function drawAlien(a) {
   const cx = a.x + a.w / 2, cy = a.y + a.h / 2;
   ctx.save();
-  // Efeito especial para drop ships
-  if (a.isDropShip) { ctx.shadowColor = '#ff6600'; ctx.shadowBlur = 25; ctx.globalAlpha = 0.9; }
+  if (a.isDropShip) { ctx.shadowColor = '#ff6600'; ctx.shadowBlur = 15; ctx.globalAlpha = 0.9; }
   else if (a.flash > 0) { ctx.globalAlpha = 0.6 + Math.sin(a.flash * 25) * 0.4; }
   
   const typeColors = [
@@ -220,7 +271,7 @@ function drawAliens() { for (let a of aliens) drawAlien(a); }
 function updateAliens(dt) {
   let edgeHit = false, maxY = 0;
   for (let a of aliens) {
-    if (a.isDropShip) continue; // Drop ships são atualizados separadamente
+    if (a.isDropShip) continue;
     if (a.y < a.targetY) { a.y += 180 * dt; if (a.y >= a.targetY) { a.y = a.targetY; a.entered = true; } continue; }
     if (!a.entered) continue;
     a.x += a.speed * a.dir * dt; maxY = Math.max(maxY, a.y + a.h);
@@ -236,13 +287,12 @@ function updateAliens(dt) {
   if (edgeHit) { for (let a of aliens) { if (!a.isDropShip) { a.dir *= -1; if (a.entered) a.y += 18; } } }
   if (maxY > canvas.height - 130) { lives = 0; updateUI(); gameOver(); }
   
-  // === SPAWN CONTÍNUO A CADA 3-4 SEGUNDOS ===
   continuousSpawnTimer += dt;
   const dynamicInterval = Math.max(2.5, continuousSpawnInterval - wave * 0.08);
   if (continuousSpawnTimer >= dynamicInterval && gameRunning) {
     spawnDropEnemy();
     continuousSpawnTimer = 0;
-    continuousSpawnInterval = 3 + Math.random() * 1.2; // Variação 3-4.2s
+    continuousSpawnInterval = 3 + Math.random() * 1.2;
   }
   updateDropEnemies(dt);
   updateEnemyCount();
@@ -252,7 +302,7 @@ function updateAliens(dt) {
 function drawPlayer() {
   if (player.invincible > 0 && Math.floor(Date.now() * 0.015) % 3 === 0) return;
   const cx = player.x + player.w / 2, cy = player.y + player.h / 2;
-  ctx.save(); ctx.shadowColor = '#0af'; ctx.shadowBlur = 18;
+  ctx.save(); ctx.shadowColor = '#0af'; ctx.shadowBlur = 12;
   ctx.fillStyle = '#33ccff'; ctx.beginPath(); ctx.moveTo(cx, player.y); ctx.lineTo(player.x + player.w - 8, player.y + player.h - 10); ctx.lineTo(cx + 5, player.y + player.h - 8); ctx.lineTo(cx, player.y + player.h - 2); ctx.lineTo(cx - 5, player.y + player.h - 8); ctx.lineTo(player.x + 8, player.y + player.h - 10); ctx.closePath(); ctx.fill();
   ctx.fillStyle = '#22aaff'; ctx.beginPath(); ctx.moveTo(player.x + 5, cy + 5); ctx.lineTo(player.x - 10, cy + 14); ctx.lineTo(player.x + 2, cy + 8); ctx.fill();
   ctx.beginPath(); ctx.moveTo(player.x + player.w - 5, cy + 5); ctx.lineTo(player.x + player.w + 10, cy + 14); ctx.lineTo(player.x + player.w - 2, cy + 8); ctx.fill();
@@ -283,14 +333,14 @@ function shoot() {
   bullets.push({ x: cx - 6, y: player.y - 8, speed: 680, size: 3.5 });
   bullets.push({ x: cx + 4, y: player.y - 8, speed: 680, size: 3.5 });
   bullets.push({ x: cx + 16, y: player.y - 5, speed: 650, size: 3 });
-  for (let i = 0; i < 12; i++) { particles.push({ x: cx + (Math.random() - 0.5) * 32, y: player.y + 5, vx: (Math.random() - 0.5) * 160, vy: -Math.random() * 220 - 100, life: 0.2 + Math.random() * 0.25, maxLife: 0.4, color: '#ffff88', size: Math.random() * 3 + 1.5 }); }
+  for (let i = 0; i < 8; i++) { particles.push({ x: cx + (Math.random() - 0.5) * 32, y: player.y + 5, vx: (Math.random() - 0.5) * 160, vy: -Math.random() * 220 - 100, life: 0.2 + Math.random() * 0.25, maxLife: 0.4, color: '#ffff88', size: Math.random() * 3 + 1.5 }); }
 }
 
 // ============ PROJÉTEIS ============
 function drawBullets() {
   ctx.save();
-  for (let b of bullets) { ctx.shadowBlur = 12; ctx.shadowColor = '#0ff'; ctx.fillStyle = '#00ffff'; ctx.fillRect(b.x - 2, b.y, 4, 14); ctx.fillStyle = '#ffffff'; ctx.fillRect(b.x - 1, b.y, 2, 14); }
-  for (let b of alienBullets) { ctx.shadowBlur = 12; ctx.shadowColor = '#f44'; ctx.fillStyle = '#ff3333'; ctx.beginPath(); ctx.arc(b.x, b.y, b.size-1, 0, Math.PI*2); ctx.fill(); ctx.fillStyle = '#ffaa00'; ctx.beginPath(); ctx.arc(b.x, b.y, b.size-2, 0, Math.PI*2); ctx.fill(); }
+  for (let b of bullets) { ctx.shadowBlur = 8; ctx.shadowColor = '#0ff'; ctx.fillStyle = '#00ffff'; ctx.fillRect(b.x - 2, b.y, 4, 14); ctx.fillStyle = '#ffffff'; ctx.fillRect(b.x - 1, b.y, 2, 14); }
+  for (let b of alienBullets) { ctx.shadowBlur = 8; ctx.shadowColor = '#f44'; ctx.fillStyle = '#ff3333'; ctx.beginPath(); ctx.arc(b.x, b.y, b.size-1, 0, Math.PI*2); ctx.fill(); ctx.fillStyle = '#ffaa00'; ctx.beginPath(); ctx.arc(b.x, b.y, b.size-2, 0, Math.PI*2); ctx.fill(); }
   ctx.restore();
 }
 function updateBullets(dt) { for (let i = bullets.length-1; i >= 0; i--) { bullets[i].y -= bullets[i].speed * dt; if (bullets[i].y < -30) bullets.splice(i,1); } for (let i = alienBullets.length-1; i >= 0; i--) { alienBullets[i].y += alienBullets[i].speed * dt; if (alienBullets[i].y > canvas.height + 50) alienBullets.splice(i,1); } }
@@ -298,21 +348,21 @@ function updateBullets(dt) { for (let i = bullets.length-1; i >= 0; i--) { bulle
 // ============ PARTÍCULAS ============
 function drawParticles() { for (let p of particles) { const alpha = Math.min(1, p.life / p.maxLife); ctx.fillStyle = p.color; ctx.globalAlpha = alpha * 0.9; ctx.beginPath(); ctx.arc(p.x, p.y, p.size * (alpha + 0.5), 0, Math.PI*2); ctx.fill(); } ctx.globalAlpha = 1; }
 function updateParticles(dt) { for (let i = particles.length-1; i >= 0; i--) { const p = particles[i]; p.x += p.vx * dt; p.y += p.vy * dt; p.life -= dt; if (p.life <= 0) particles.splice(i,1); } }
-function explode(x, y, color1, color2, count=25, isBig=false) {
+function explode(x, y, color1, color2, count=20, isBig=false) {
   sound.playExplosion(isBig);
-  for (let i = 0; i < count; i++) { const angle = Math.random() * Math.PI * 2, speed = Math.random() * 280 + 80; particles.push({ x: x, y: y, vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed, life: 0.5 + Math.random() * 0.8, maxLife: 0.9, color: Math.random() < 0.6 ? color1 : color2, size: Math.random() * 5 + 2 }); }
+  for (let i = 0; i < count; i++) { const angle = Math.random() * Math.PI * 2, speed = Math.random() * 250 + 60; particles.push({ x: x, y: y, vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed, life: 0.4 + Math.random() * 0.6, maxLife: 0.8, color: Math.random() < 0.6 ? color1 : color2, size: Math.random() * 4 + 2 }); }
 }
 
 // ============ COLISÕES ============
 function checkCollisions() {
-  for (let i = bullets.length-1; i >= 0; i--) { const b = bullets[i]; for (let j = aliens.length-1; j >= 0; j--) { const a = aliens[j]; if (b.x + 4 > a.x && b.x - 4 < a.x + a.w && b.y + 10 > a.y && b.y < a.y + a.h) { bullets.splice(i,1); a.hp--; a.flash = 0.25; if (a.hp <= 0) { const points = (a.type + 1) * 10 * (1 + Math.floor(wave / 5)); score += points; totalKills++; explode(a.x + a.w/2, a.y + a.h/2, '#3aff3a', '#ffff00', 28, a.maxHp >= 3); aliens.splice(j,1); if (!a.isDropShip) aliensDefeatedInWave++; updateUI(); } else { explode(b.x, b.y, '#ffffff', '#88ff88', 8); } break; } } }
+  for (let i = bullets.length-1; i >= 0; i--) { const b = bullets[i]; for (let j = aliens.length-1; j >= 0; j--) { const a = aliens[j]; if (b.x + 4 > a.x && b.x - 4 < a.x + a.w && b.y + 10 > a.y && b.y < a.y + a.h) { bullets.splice(i,1); a.hp--; a.flash = 0.25; if (a.hp <= 0) { const points = (a.type + 1) * 10 * (1 + Math.floor(wave / 5)); score += points; totalKills++; explode(a.x + a.w/2, a.y + a.h/2, '#3aff3a', '#ffff00', 20, a.maxHp >= 3); aliens.splice(j,1); if (!a.isDropShip) aliensDefeatedInWave++; updateUI(); } else { explode(b.x, b.y, '#ffffff', '#88ff88', 6); } break; } } }
   if (player.invincible <= 0) { for (let i = alienBullets.length-1; i >= 0; i--) { const b = alienBullets[i]; if (b.x + 6 > player.x && b.x - 6 < player.x + player.w && b.y + 6 > player.y && b.y - 6 < player.y + player.h) { alienBullets.splice(i,1); hitPlayer(); } } }
   if (player.invincible <= 0) { for (let a of aliens) { if (a.entered && player.x < a.x + a.w && player.x + player.w > a.x && player.y < a.y + a.h && player.y + player.h > a.y) { hitPlayer(); break; } } }
 }
-function hitPlayer() { lives--; player.invincible = 2; sound.playHit(); explode(player.x + player.w/2, player.y + player.h/2, '#0af', '#ff4444', 40); updateUI(); if (lives <= 0) gameOver(); }
+function hitPlayer() { lives--; player.invincible = 2; sound.playHit(); explode(player.x + player.w/2, player.y + player.h/2, '#0af', '#ff4444', 30); updateUI(); if (lives <= 0) gameOver(); }
 
 // ============ ONDAS INFINITAS ============
-function checkWave() { if (aliensDefeatedInWave >= aliensPerWave && aliens.filter(a => !a.isDropShip).length === 0 && gameRunning) { wave++; aliensDefeatedInWave = 0; aliensPerWave = Math.min(70, 24 + Math.floor(wave * 2.2)); player.shootRate = Math.max(0.06, 0.08 - wave * 0.003); waveAnnounceTimer = 0.5; const waveDiv = document.createElement('div'); waveDiv.className = 'wave-badge'; waveDiv.textContent = `🌊 ONDA ${wave} 🌊`; document.body.appendChild(waveDiv); setTimeout(() => waveDiv.remove(), 1000); sound.playWaveStart(); updateUI(); spawnAliens(); } if (waveAnnounceTimer > 0) waveAnnounceTimer -= 0.016; }
+function checkWave() { if (aliensDefeatedInWave >= aliensPerWave && aliens.filter(a => !a.isDropShip).length === 0 && gameRunning) { wave++; aliensDefeatedInWave = 0; aliensPerWave = Math.min(60, 24 + Math.floor(wave * 2)); player.shootRate = Math.max(0.065, 0.08 - wave * 0.003); waveAnnounceTimer = 0.5; const waveDiv = document.createElement('div'); waveDiv.className = 'wave-badge'; waveDiv.textContent = `🌊 ONDA ${wave} 🌊`; document.body.appendChild(waveDiv); setTimeout(() => waveDiv.remove(), 1000); sound.playWaveStart(); updateUI(); spawnAliens(); } if (waveAnnounceTimer > 0) waveAnnounceTimer -= 0.016; }
 function updateUI() { document.getElementById('score').textContent = score; document.getElementById('lives').textContent = lives; document.getElementById('wave').textContent = wave; document.getElementById('kills').textContent = totalKills; }
 
 // ============ FLUXO ============
@@ -332,7 +382,9 @@ document.body.addEventListener('click', () => { if (sound.ctx && sound.ctx.state
 document.body.addEventListener('touchstart', () => { if (sound.ctx && sound.ctx.state !== 'running') sound.resume(); });
 document.body.addEventListener('touchmove', (e) => { if (e.target === canvas || e.target.closest('#controls')) e.preventDefault(); }, { passive: false });
 
-initStars(); resizeCanvas();
+// Inicializar jogo
+initStars();
+resizeCanvas();
 </script>
 </body>
 </html>
